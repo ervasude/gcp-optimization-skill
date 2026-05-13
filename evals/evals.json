@@ -1,0 +1,168 @@
+{
+  "skill": "gcp-optimization",
+  "version": "0.1.0",
+  "evals": [
+    {
+      "id": "bq-001-partition-pruning-basic",
+      "prompt": "My BigQuery query scans 1TB of data even though I filter on user_id. The table is huge. Why is it scanning so much?",
+      "expected_section": "bigquery.md#partition-pruning",
+      "expected_topics": [
+        "partition pruning",
+        "WHERE clause on partition column",
+        "partitioned tables"
+      ],
+      "category": "diagnostic"
+    },
+    {
+      "id": "bq-002-clustering-types",
+      "prompt": "Can I cluster a BigQuery table on a FLOAT64 column?",
+      "expected_section": "bigquery.md#clustering",
+      "expected_topics": [
+        "clustering type restrictions",
+        "FLOAT64 not supported",
+        "allowed types: STRING, INT64, DATE, TIMESTAMP, BOOL, NUMERIC, BIGNUMERIC, DATETIME, GEOGRAPHY, RANGE"
+      ],
+      "category": "factual"
+    },
+    {
+      "id": "bq-003-select-star-cost",
+      "prompt": "Why is SELECT * more expensive than selecting specific columns in BigQuery? In Postgres it doesn't matter that much.",
+      "expected_section": "bigquery.md#select-avoidance",
+      "expected_topics": [
+        "columnar storage",
+        "column-based format",
+        "BigQuery reads only requested column blocks"
+      ],
+      "category": "conceptual"
+    },
+    {
+      "id": "bq-004-select-limit-myth",
+      "prompt": "If I add LIMIT 100 to a SELECT * query in BigQuery, will it reduce the cost?",
+      "expected_section": "bigquery.md#select-avoidance",
+      "expected_topics": [
+        "LIMIT does not reduce bytes scanned",
+        "LIMIT applies after scan"
+      ],
+      "category": "myth-busting"
+    },
+    {
+      "id": "bq-005-mv-when-to-use",
+      "prompt": "We have a dashboard that runs the same expensive aggregation query every 5 minutes. Should we use a materialized view?",
+      "expected_section": "bigquery.md#materialized-views",
+      "expected_topics": [
+        "materialized view",
+        "cost-benefit tradeoff",
+        "query cost × run count > refresh cost"
+      ],
+      "category": "decision"
+    },
+    {
+      "id": "bq-006-join-order",
+      "prompt": "I have a JOIN between a 5 billion row table and a 10,000 row lookup table. What's the right way to write this?",
+      "expected_section": "bigquery.md#join-optimization",
+      "expected_topics": [
+        "place largest table first",
+        "broadcast join",
+        "filter before joining"
+      ],
+      "category": "best-practice"
+    },
+    {
+      "id": "bq-007-skew-diagnosis",
+      "prompt": "My query plan shows computeMsMax is 10x higher than computeMsAvg on one stage. What does that mean?",
+      "expected_section": "bigquery.md#query-plan",
+      "expected_topics": [
+        "data skew",
+        "uneven worker distribution",
+        "one worker doing most of the work"
+      ],
+      "category": "diagnostic"
+    },
+    {
+      "id": "bq-008-long-term-storage-reset",
+      "prompt": "I backfilled some 2-year-old partitions to fix a few rows. My storage bill jumped. Why?",
+      "expected_section": "bigquery.md#storage-optimization",
+      "expected_topics": [
+        "long-term storage discount",
+        "modification resets clock",
+        "active vs long-term pricing"
+      ],
+      "category": "diagnostic"
+    },
+    {
+      "id": "bq-009-require-partition-filter",
+      "prompt": "How do I prevent analysts on my team from accidentally scanning the entire 50TB events table?",
+      "expected_section": "bigquery.md#storage-optimization",
+      "expected_topics": [
+        "require_partition_filter",
+        "fail queries without partition filter"
+      ],
+      "category": "preventive"
+    },
+    {
+      "id": "gcs-001-storage-class-archive",
+      "prompt": "I have audit logs from 3 years ago. We never read them but legal requires us to keep them for 7 years. Which storage class should I use?",
+      "expected_section": "cloud-storage.md#storage-classes",
+      "expected_topics": [
+        "Archive storage class",
+        "long-term retention",
+        "lowest cost class"
+      ],
+      "category": "decision"
+    },
+    {
+      "id": "gcs-002-lifecycle-rule",
+      "prompt": "Our logs bucket grows by 500GB/month and we keep everything forever. How can we cap costs without manual cleanup?",
+      "expected_section": "cloud-storage.md#lifecycle-management",
+      "expected_topics": [
+        "lifecycle rules",
+        "automatic class transitions",
+        "auto-delete after age"
+      ],
+      "category": "preventive"
+    },
+    {
+      "id": "gcs-003-versioning-trap",
+      "prompt": "I enabled object versioning on a bucket where files are overwritten daily. Now storage cost is 6x higher than before. What happened?",
+      "expected_section": "cloud-storage.md#object-versioning",
+      "expected_topics": [
+        "noncurrent versions billed",
+        "lifecycle rule to clean old versions",
+        "numNewerVersions"
+      ],
+      "category": "diagnostic"
+    },
+    {
+      "id": "gcs-004-region-egress",
+      "prompt": "My BigQuery is in europe-west1 but my source bucket is in US multi-region. Queries are slow and the bill is high. Why?",
+      "expected_section": "cloud-storage.md#location",
+      "expected_topics": [
+        "cross-region egress",
+        "colocate bucket with compute",
+        "egress fees"
+      ],
+      "category": "diagnostic"
+    },
+    {
+      "id": "scope-001-out-of-scope",
+      "prompt": "How do I optimize my React component re-renders?",
+      "expected_section": null,
+      "expected_topics": [
+        "out of scope",
+        "skill does not cover frontend"
+      ],
+      "category": "scope-test"
+    },
+    {
+      "id": "scope-002-mixed-domain",
+      "prompt": "I'm building a Dataflow pipeline that writes to BigQuery. What should I optimize?",
+      "expected_section": "bigquery.md (storage + partitioning) + data-pipelines.md (coming soon)",
+      "expected_topics": [
+        "BigQuery write optimization",
+        "partition design",
+        "acknowledge data-pipelines.md is stub"
+      ],
+      "category": "edge-case"
+    }
+  ]
+}
